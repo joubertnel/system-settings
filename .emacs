@@ -118,10 +118,6 @@
 (add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
 
 
-;; SproutCore minor mode
-(add-to-list 'load-path "~/.emacs.d/sinasi")
-(require 'sinasi)
-
 ;; Specify modes for Lisp file extensions
 (setq auto-mode-alist (append '(("\\.emacs$" . emacs-lisp-mode)
 			        ("\\.lisp$" . lisp-mode)
