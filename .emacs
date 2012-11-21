@@ -8,13 +8,17 @@
 
 
 (add-to-list 'load-path "~/.emacs.d/")
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
-
 
 (add-to-list 'load-path "~/.emacs.d/color-theme/")
+(add-to-list 'load-path "~/.emacs.d/auto-complete-mode/");
+
+;; IDO
+(setq
+ ido-enable-flex-matching t
+ ido-everywhere t
+ ido-work-directory-list '("~/code"))
+
+(ido-mode 1)
 
 ;;________________________________________________________________
 ;;;; Initial code load
@@ -23,7 +27,42 @@
 (require 'font-lock)
 
 (require 'color-theme)
-;(require 'clojure-mode)
+
+
+(setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
+			 ("ELPA" . "http://tromey.com/elpa/")
+			 ("gnu" . "http://elpa.gnu.org/packages/")))
+
+(package-initialize)
+
+
+
+;;________________________________________________________________
+;;;; Auto-complete
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-mode/dict")
+(setq-default ac-sources (add-to-list 'ac-sources 'ac-source-dictionary))
+(global-auto-complete-mode t)
+(setq ac-auto-start 2)
+(setq ac-ignore-case nil)
+
+;;________________________________________________________________
+;;;; JavaScript repl
+(add-to-list 'load-path "~/.emacs.d/js-comint/");
+(require 'js-comint)
+(setq inferior-js-program-command "/usr/local/bin/node")
+(setq inferior-js-mode-hook
+      (lambda ()
+        ;; We like nice colors
+        (ansi-color-for-comint-mode-on)
+        ;; Deal with some prompt nonsense
+	(add-to-list 'comint-preoutput-filter-functions
+		     (lambda (output)
+		       (replace-regexp-in-string ".*1G\.\.\..*5G" "... "
+						 (replace-regexp-in-string ".*1G.*3G" "> " output))))))
+						 
+
+
 
 
 ;;________________________________________________________________
@@ -53,8 +92,8 @@
 
 
 ;; Allow copy/paste with other applications on the system
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+;; (setq x-select-enable-clipboard t)
+;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; Conventional mouse/arrow movement & selection
 ;(pc-selection-mode)
