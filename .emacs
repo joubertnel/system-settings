@@ -8,17 +8,8 @@
 
 (add-to-list 'load-path "~/.emacs.d/")
 
-(add-to-list 'load-path "~/.emacs.d/color-theme/")
-(add-to-list 'load-path "~/.emacs.d/auto-complete-mode/");
+;(add-to-list 'load-path "~/.emacs.d/auto-complete-mode/");
 
-;; IDO
-;; - instead of IDO, rather use Icicles
-;; (setq
-;;  ido-enable-flex-matching t
-;;  ido-everywhere t
-;;  ido-work-directory-list '("~/code"))
-
-;; (ido-mode 1)
 
 ;;________________________________________________________________
 ;;;; Initial code load
@@ -26,8 +17,8 @@
                                         ;(require 'cl)
 (require 'font-lock)
 
-(require 'color-theme)
 
+(setq package-list '(color-theme auto-complete js-comint p4 icicles))
 
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
 			 ("ELPA" . "http://tromey.com/elpa/")
@@ -36,27 +27,58 @@
 
 (package-initialize)
 
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+
+(dolist (package package-list)
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+
+(when (require 'color-theme nil 'noerror)
+  (progn
+    (color-theme-initialize)
+    (color-theme-deep-blue)))
+  
+
+
+
+;(if (require 'color-theme nil 'noerror)
+;    (progn
+;      (color-theme-initialize)
+;      (color-theme-deep-blue))
+;  (package-install 'color-theme))
+
+
+
+
+
+
 
 
 ;;________________________________________________________________
 ;;;; Auto-complete
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-mode/dict")
-(setq-default ac-sources (add-to-list 'ac-sources 'ac-source-dictionary))
-(global-auto-complete-mode t)
-(setq ac-auto-start 2)
-(setq ac-ignore-case nil)
+(when (require 'auto-complete-config nil 'noerror)
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-mode/dict")
+  (setq-default ac-sources (add-to-list 'ac-sources 'ac-source-dictionary))
+  (global-auto-complete-mode t)
+  (setq ac-auto-start 2)
+  (setq ac-ignore-case nil)
+
+  )
 
 ;;________________________________________________________________
 ;;;; JavaScript repl
 (add-to-list 'load-path "~/.emacs.d/js-comint/");
-(require 'js-comint)
+(when (require 'js-comint nil 'noerror))
+
 (setq inferior-js-program-command "/usr/local/bin/node")
 (setq inferior-js-mode-hook
       (lambda ()
-        ;; We like nice colors
-        (ansi-color-for-comint-mode-on)
-        ;; Deal with some prompt nonsense
+	;; We like nice colors
+	(ansi-color-for-comint-mode-on)
+	;; Deal with some prompt nonsense
 	(add-to-list 'comint-preoutput-filter-functions
 		     (lambda (output)
 		       (replace-regexp-in-string ".*1G\.\.\..*5G" "... "
@@ -111,22 +133,6 @@
 (global-linum-mode 1)
 
 
-;; Colorization
-(color-theme-initialize)
-                                        ;(color-theme-word-perfect)
-                                        ;(color-theme-gtk-ide)
-                                        ;(color-theme-blippblopp)
-                                        ;(color-theme-andreas)
-                                        ;(color-theme-blue-mood)
-                                        ;(color-theme-fischmeister)
-(color-theme-deep-blue)
-                                        ;(color-theme-gray30)
-                                        ;(color-theme-parus)
-                                        ;(color-theme-charcoal-black)
-                                        ;(color-theme-blue-sea)
-                                        ;(color-theme-classic)
-                                        ;(color-theme-dark-laptop)
-                                        ;(color-theme-clarity)
 
 
 ;; workaround for slow startup because of setting font in .emacs
@@ -157,16 +163,16 @@
 ;; to make it look like a plain decl, and any ':false' are left behind so they'll effectively be ignored as
 ;; you can;t have a symbol called "someName:false"
 (add-hook 'js2-post-parse-callbacks
-          (lambda ()
-            (when (> (buffer-size) 0)
-              (let ((btext (replace-regexp-in-string
-                            ": *true" " "
-                            (replace-regexp-in-string "[\n\t ]+" " " (buffer-substring-no-properties 1 (buffer-size)) t t))))
-                (mapc (apply-partially 'add-to-list 'js2-additional-externs)
-                      (split-string
-                       (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
-                       " *, *" t))
-                ))))
+	  (lambda ()
+	    (when (> (buffer-size) 0)
+	      (let ((btext (replace-regexp-in-string
+			    ": *true" " "
+			    (replace-regexp-in-string "[\n\t ]+" " " (buffer-substring-no-properties 1 (buffer-size)) t t))))
+		(mapc (apply-partially 'add-to-list 'js2-additional-externs)
+		      (split-string
+		       (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
+		       " *, *" t))
+		))))
 
 ;; Handlebars support
 (add-to-list 'auto-mode-alist '("\\.handlebars$" . html-mode))
@@ -177,10 +183,10 @@
 
 ;; Specify modes for Lisp file extensions
 (setq auto-mode-alist (append '(("\\.emacs$" . emacs-lisp-mode)
-			        ("\\.lisp$" . lisp-mode)
+				("\\.lisp$" . lisp-mode)
 				("\\.cl$" . lisp-mode)
 				("\\.sexp$" . lisp-mode)
-			        ("\\.asd$" . lisp-mode))
+				("\\.asd$" . lisp-mode))
 			      auto-mode-alist))
 
 ;; Specify mode for Clojure file extensions
@@ -243,7 +249,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(icicle-saved-completion-sets (quote (("pluslight" . "/Users/jnel/code/ppd/10FootUI/Apps/HTML/TV/projects/Gibbon_PlusLight/src/pluslight.icy"))))
  '(js2-bounce-indent-p t)
  '(js2-enter-indents-newline t)
  '(js2-indent-on-enter-key t)
@@ -276,11 +281,12 @@
 
 ;;________________________________________________________________
 ;;;; Perforce
-(require 'p4)
+(when (require 'p4 nil 'noerror))
 
 
 ;;________________________________________________________________
 ;;;; Icicles
-(require 'icicles)
-(icy-mode 1)
-(setq locate-command "mdfind")
+(when (require 'icicles nil 'noerror)
+  (icy-mode 1)
+  (setq locate-command "mdfind")
+  )
