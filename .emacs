@@ -1,6 +1,9 @@
+;; Encoding
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
+
 (setq make-backup-files nil)
 
 ;;________________________________________________________________
@@ -8,15 +11,9 @@
 
 (add-to-list 'load-path "~/.emacs.d/")
 
-;(add-to-list 'load-path "~/.emacs.d/auto-complete-mode/");
-
 
 ;;________________________________________________________________
 ;;;; Initial code load
-
-                                        ;(require 'cl)
-(require 'font-lock)
-
 
 (setq package-list '(color-theme auto-complete js-comint p4 icicles))
 
@@ -40,21 +37,9 @@
   (progn
     (color-theme-initialize)
     (color-theme-deep-blue)))
-  
 
 
-
-;(if (require 'color-theme nil 'noerror)
-;    (progn
-;      (color-theme-initialize)
-;      (color-theme-deep-blue))
-;  (package-install 'color-theme))
-
-
-
-
-
-
+(require 'font-lock)
 
 
 ;;________________________________________________________________
@@ -87,7 +72,6 @@
 
 
 
-
 ;;________________________________________________________________
 ;;;; Scheme
 
@@ -114,17 +98,7 @@
 ;; Key bindings
 (defun my-lisp-mode-hook ()
   (define-key lisp-mode-map "\r" 'newline-and-indent))
-                                        ;(add-hook 'lisp-mode-hook 'my-lisp-mode-hook)
 
-
-;; Allow copy/paste with other applications on the system
-;; (setq x-select-enable-clipboard t)
-;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-
-
-;; Conventional mouse/arrow movement & selection
-                                        ;(pc-selection-mode)
-                                        ;(delete-selection-mode t)
 
 
 ;; Column & line numbers in mode bar
@@ -133,23 +107,8 @@
 (global-linum-mode 1)
 
 
-
-
-;; workaround for slow startup because of setting font in .emacs
-;; https://launchpad.net/metacity/+bug/23005
-
-                                        ;(modify-frame-parameters nil '((wait-for-wm . nil)))
-
 ;; Fontification
 (global-font-lock-mode t)
-
-
-;;(set-default-font "-misc-fixed-medium-r-*-*-*-140-*-*-*-*-*-*")
-
-
-                                        ;(add-to-list 'initial-frame-alist
-                                        ;	     '(font . "-misc-fixed-medium-r-*-*-*-140-*-*-*-*-*-*"))
-
 
 
 
@@ -226,20 +185,13 @@
 
 ;;________________________________________________________________
 ;;;; Remote file access
-                                        ;(setq tramp-syntax 'url)
 (setq tramp-debug-buffer t)
 (require 'tramp)
-
-
-
-
 
 
 ;;________________________________________________________________
 ;;;; Keybindings 
 
-;; (global-set-key [M-up] 'previous-multiframe-window)
-;; (global-set-key [M-down] 'next-multiframe-window)
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-x /") 'comment-region)
 (global-set-key (kbd "C-x \\") 'uncomment-region)
@@ -288,5 +240,4 @@
 ;;;; Icicles
 (when (require 'icicles nil 'noerror)
   (icy-mode 1)
-  (setq locate-command "mdfind")
-  )
+  (setq locate-command "mdfind"))
