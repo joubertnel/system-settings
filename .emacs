@@ -15,7 +15,7 @@
 ;;________________________________________________________________
 ;;;; Initial code load
 
-(setq package-list '(color-theme auto-complete js-comint p4 icicles))
+(setq package-list '(color-theme auto-complete js-comint p4 icicles js2-mode))
 
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
 			 ("ELPA" . "http://tromey.com/elpa/")
@@ -116,6 +116,10 @@
 ;;;; Programming - file types
 
 ;; JavaScript support
+
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+
 ;; After js2 has parsed a js file, we look for jslint globals decl comment ("/* global Fred, _, Harry */") and
 ;; add any symbols to a buffer-local var of acceptable global vars
 ;; Note that we also support the "symbol: true" way of specifying names via a hack (remove any ":true"
@@ -132,6 +136,14 @@
 		       (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
 		       " *, *" t))
 		))))
+
+(setq js2-basic-offset 4
+      js2-indent-on-enter-key t
+      js2-auto-indent-p t
+      js2-bounce-indent-p nil)
+
+      
+
 
 ;; Handlebars support
 (add-to-list 'auto-mode-alist '("\\.handlebars$" . html-mode))
@@ -196,23 +208,7 @@
 (global-set-key (kbd "C-x /") 'comment-region)
 (global-set-key (kbd "C-x \\") 'uncomment-region)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(js2-bounce-indent-p t)
- '(js2-enter-indents-newline t)
- '(js2-indent-on-enter-key t)
- '(quack-fontify-style nil)
- '(quack-pretty-lambda-p t)
- '(quack-programs (quote ("csc" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
 
 
 ;;________________________________________________________________
