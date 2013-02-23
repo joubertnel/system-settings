@@ -219,19 +219,21 @@
 
 
 ;;________________________________________________________________
-;;;; Killring / Pasteboard integration
-(defun copy-from-osx ()
-  (shell-command-to-string "pbpaste"))
+;;;; Killring / Pasteboard integration on OS X
 
-(defun paste-to-osx (text &optional push)
-  (let ((process-connection-type nil))
-    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc))))
+(when (eq system-type "darwin")
+  (defun copy-from-osx ()
+    (shell-command-to-string "pbpaste"))
 
-;; Override defaults to use the Mac copy and paste
-(setq interprogram-cut-function 'paste-to-osx)
-(setq interprogram-paste-function 'copy-from-osx)
+  (defun paste-to-osx (text &optional push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+
+  ;; Override defaults to use the Mac copy and paste
+  (setq interprogram-cut-function 'paste-to-osx)
+  (setq interprogram-paste-function 'copy-from-osx))
 
 
 ;;________________________________________________________________
