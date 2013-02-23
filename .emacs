@@ -116,6 +116,9 @@
 ;;;; Programming - file types
 
 ;; JavaScript support
+
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
 ;; After js2 has parsed a js file, we look for jslint globals decl comment ("/* global Fred, _, Harry */") and
 ;; add any symbols to a buffer-local var of acceptable global vars
 ;; Note that we also support the "symbol: true" way of specifying names via a hack (remove any ":true"
