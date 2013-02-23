@@ -241,4 +241,5 @@
 (when (require 'icicles nil 'noerror)
   (icy-mode 1)
   (global-set-key (kbd "C-x C-l") 'icicle-locate)
-  (setq locate-command "mdfind"))
+  (if (eq system-type "darwin")
+      (setq locate-command "mdfind")))
