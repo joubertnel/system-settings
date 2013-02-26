@@ -118,6 +118,11 @@
 ;; JavaScript support
 
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-hook 'js2-mode-hook 'js2-mode-customizations-hook)
+(defun js2-mode-customizations-hook ()
+  (local-set-key (kbd "C-j") 'reindent-then-newline-and-indent)
+  (setq js2-basic-offset 4
+        js2-bounce-indent-p nil))
 
 ;; After js2 has parsed a js file, we look for jslint globals decl comment ("/* global Fred, _, Harry */") and
 ;; add any symbols to a buffer-local var of acceptable global vars
@@ -204,9 +209,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js2-bounce-indent-p t)
- '(js2-enter-indents-newline t)
- '(js2-indent-on-enter-key t)
+ ;; '(js2-bounce-indent-p t)
+ ;; '(js2-enter-indents-newline t)
+ ;; '(js2-indent-on-enter-key t)
  '(quack-fontify-style nil)
  '(quack-pretty-lambda-p t)
  '(quack-programs (quote ("csc" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
