@@ -138,7 +138,7 @@
 		(mapc (apply-partially 'add-to-list 'js2-additional-externs)
 		      (split-string
 		       (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
-		       " *, *" t))
+		       " *,? * " t))
 		))))
 
 ;; Handlebars support
