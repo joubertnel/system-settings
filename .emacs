@@ -1,3 +1,12 @@
+;; Environment sanity
+;; Hack to have the right paths when running as Cocoa app
+(setenv "PATH" (shell-command-to-string "launchctl getenv PATH"))
+
+;; requires in .bash_profile: launchctl setenv NODE_PATH $NODE_PATH
+(setenv "NODE_PATH" (shell-command-to-string "launchctl getenv NODE_PATH"))
+
+
+;;________________________________________________________________
 ;; Encoding
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -15,7 +24,7 @@
 ;;________________________________________________________________
 ;;;; Initial code load
 
-(setq package-list '(color-theme auto-complete js-comint p4 icicles js2-mode))
+(setq package-list '(color-theme auto-complete js-comint p4 icicles js2-mode json-mode))
 
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
 			 ("ELPA" . "http://tromey.com/elpa/")
@@ -135,6 +144,9 @@
 		       (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
 		       " *, *" t))
 		))))
+
+;; JSON support
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 
 ;; Handlebars support
 (add-to-list 'auto-mode-alist '("\\.handlebars$" . html-mode))
