@@ -4,6 +4,7 @@
 
 ;; requires in .bash_profile: launchctl setenv NODE_PATH $NODE_PATH
 (setenv "NODE_PATH" (shell-command-to-string "launchctl getenv NODE_PATH"))
+(setenv "NODE_NO_READLINE" "1")
 
 
 ;;________________________________________________________________
