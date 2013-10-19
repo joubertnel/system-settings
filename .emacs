@@ -69,15 +69,16 @@
 (when (require 'js-comint nil 'noerror))
 
 (setq inferior-js-program-command "/usr/local/bin/node")
-(setq inferior-js-mode-hook
-      (lambda ()
-	;; We like nice colors
-	(ansi-color-for-comint-mode-on)
-	;; Deal with some prompt nonsense
-	(add-to-list 'comint-preoutput-filter-functions
-		     (lambda (output)
-		       (replace-regexp-in-string ".*1G\.\.\..*5G" "... "
-						 (replace-regexp-in-string ".*1G.*3G" "> " output))))))
+
+;; (setq inferior-js-mode-hook
+;;       (lambda ()
+;; 	;; We like nice colors
+;; 	(ansi-color-for-comint-mode-on)
+;; 	;; Deal with some prompt nonsense
+;; 	(add-to-list 'comint-preoutput-filter-functions
+;; 		     (lambda (output)
+;; 		       (replace-regexp-in-string ".*1G\.\.\..*5G" "... "
+;; 						 (replace-regexp-in-string ".*1G.*3G" "> " output))))))
 
 
 
@@ -222,9 +223,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;; '(js2-bounce-indent-p t)
- ;; '(js2-enter-indents-newline t)
- ;; '(js2-indent-on-enter-key t)
+ '(ecb-options-version "2.40")
  '(quack-fontify-style nil)
  '(quack-pretty-lambda-p t)
  '(quack-programs (quote ("csc" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
