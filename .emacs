@@ -65,7 +65,7 @@
 
 ;;________________________________________________________________
 ;;;; JavaScript repl
-(add-to-list 'load-path "~/.emacs.d/js-comint/");
+(add-to-list 'load-path "~/.emacs.d/js-comint/")
 (when (require 'js-comint nil 'noerror))
 
 (setq inferior-js-program-command "/usr/local/bin/node")
@@ -80,6 +80,11 @@
 ;; 		       (replace-regexp-in-string ".*1G\.\.\..*5G" "... "
 ;; 						 (replace-regexp-in-string ".*1G.*3G" "> " output))))))
 
+
+;;________________________________________________________________
+;;;; JSON formatter
+(add-to-list 'load-path "~/.emacs.d/json-reformat/")
+(when (require 'json-reformat nil 'noerror))
 
 
 
