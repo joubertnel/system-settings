@@ -19,13 +19,14 @@
 ;;________________________________________________________________
 ;;;; Directories
 
-(add-to-list 'load-path "~/.emacs.d/")
+;;(add-to-list 'load-path "~/.emacs.d/")
 
 
 ;;________________________________________________________________
 ;;;; Initial code load
 
-(setq package-list '(color-theme auto-complete js-comint p4 icicles js2-mode json-mode))
+(setq package-list '(color-theme auto-complete js-comint p4 icicles js2-mode json-mode
+                                 sws-mode))
 
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
 			 ("ELPA" . "http://tromey.com/elpa/")
@@ -222,9 +223,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;; '(js2-bounce-indent-p t)
- ;; '(js2-enter-indents-newline t)
- ;; '(js2-indent-on-enter-key t)
+ '(ecb-options-version "2.40")
  '(quack-fontify-style nil)
  '(quack-pretty-lambda-p t)
  '(quack-programs (quote ("csc" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
@@ -266,3 +265,13 @@
   (global-set-key (kbd "C-x C-l") 'icicle-locate)
   (if (eq system-type "darwin")
       (setq locate-command "mdfind")))
+
+;;________________________________________________________________
+;;;; Stylus
+(add-to-list 'load-path "~/.emacs.d/stylus/")
+(when (require 'stylus-mode nil 'noerror))
+
+
+;;________________________________________________________________
+;;;; Factor
+(setq fuel-factor-root-dir "/Applications/factor")
